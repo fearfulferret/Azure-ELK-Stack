@@ -44,24 +44,25 @@ The machines on the internal network are not exposed to the public Internet.
 
 Only the web servers (via the Azure-managed load balancer) and the ELK server accept external HTTP connections. These machines only accept connections from a whitelist of IP addresses containing only those IPs associated with personal workstations; these will not be shared in this repository for privacy reasons. The web servers only allow http traffic on port 80, and the logging server only accepts http traffic on port 5601 (used to access the Kibana web app).
 
-Machines within the network can only be accessed by the Jump Box machine via ssh.
+Machines within the network can only be accessed by the Jump Box machine via ssh. The ssh protocol uses public/private key authentication, with one key pair used for logging into the jump box from a workstation (private key on workstation, public key on jump box) and one other key pair used for logging into each of the other VMs from the jump box (private key on jump box, public key on each other VM).
+
 A summary of the access policies in place can be found in the table below.
 
-| Name     | Publicly Accessible | Allowed IP Addresses |
-|----------|---------------------|----------------------|
-| Jump Box | Yes/No              | 10.0.0.1 10.0.0.2    |
-|          |                     |                      |
-|          |                     |                      |
+| Name       | Public Access | Whitelisted IP address(es) | Protocol |
+|------------|---------------|----------------------------|----------|
+| Jump Box   | Yes           | x.x.x.x (workstation)      | ssh      |
+| Web-1      | No            | 10.0.0.4                   | ssh      |
+| Web-2      | No            | 10.0.0.4                   | ssh      |
+| ELK Logger | No            | 10.0.0.4                   | ssh      |
 
 ### Elk Configuration
 
-Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
-- _TODO: What is the main advantage of automating configuration with Ansible?_
+Ansible was used to automate configuration of the ELK machine. This allows all configurations to be performed in batch without ever needing to log into the ELK machine itself. This is a highly modular design that can be easily configured for a variety of applications and deployed quickly across as many VMs as necessary.
 
 The playbook implements the following tasks:
-- _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
-- ...
-- ...
+- 
+- 
+- 
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
@@ -69,13 +70,16 @@ The following screenshot displays the result of running `docker ps` after succes
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
-- _TODO: List the IP addresses of the machines you are monitoring_
+- Web-1 at 10.0.0.5
+- Web-2 at 10.0.0.6
 
 We have installed the following Beats on these machines:
-- _TODO: Specify which Beats you successfully installed_
+- Filebeat
+- Metricbeat
 
 These Beats allow us to collect the following information from each machine:
-- _TODO: In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
+- Filebeat collects logs of file access and modification, including data about which user modified the file and what process modified that file.
+- Metricbeat collects logs of system configuration changes, including starting and stopping of processes, installation of new processes, and resource usage (RAM, CPU, Disk I/O, etc.)
 
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
