@@ -9,8 +9,6 @@ The files in this repository were used to configure the network depicted below.
 
 These files were used to deploy a live ELK deployment on Azure containing two web servers, a jumpbox provisioner, and a logging server. These files can be used to replicate the deployment depicted above, and can be easily modified to deploy additional logging services or additional web server content.
 
-  - _TODO: Enter the playbook file._
-
 This document contains the following details:
 - Description of the Topology
 - Access Policies
@@ -29,7 +27,6 @@ Load balancing ensures that the application will be highly available, while the 
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for filesystem changes and suspicious modifications as well as system and network modifications using Filebeat and Metricbeat.
 
 The configuration details of each machine may be found below.
-_Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdown_tables) to add/remove values from the table_.
 
 | Name          | Function       | IP Address |
 |---------------|----------------|------------|
@@ -60,11 +57,12 @@ A summary of the access policies in place can be found in the table below.
 Ansible was used to automate configuration of the ELK machine. This allows all configurations to be performed in batch without ever needing to log into the ELK machine itself. This is a highly modular design that can be easily configured for a variety of applications and deployed quickly across as many VMs as necessary.
 
 The playbook implements the following tasks:
-- 
-- 
-- 
+- Increases the maximum memory available to ElasticSearch
+- Installs docker.io, python3-pip, and pip's docker module
+- Installs the logging container from the sebp/elk image
+- enables the docker service and configures docker to run the container at startup
 
-The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
+The following screenshot displays the result of running `docker ps` on the ELK server after successfully configuring the ELK instance.
 
 ![TODO: Update the path with the name of your screenshot of docker ps output](Images/docker_ps_output.png)
 
@@ -85,13 +83,7 @@ These Beats allow us to collect the following information from each machine:
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the _____ file to _____.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
-
-_TODO: Answer the following questions to fill in the blanks:_
-- _Which file is the playbook? Where do you copy it?_
-- _Which file do you update to make Ansible run the playbook on a specific machine? How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-- _Which URL do you navigate to in order to check that the ELK server is running?
-
-_As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+- Copy the contents of the Ansible directory in this repository to /etc/ansible within the ansible container.
+- Update the hosts file to include under the [webservers] tag all webserver IP addresses, and to include the logging server IP address under the [loggers] tab.
+- Update the filebeat-config.yaml and metricbeat-config.yaml files with the correct IP address of your logging server. This repository has the server at 10.1.0.4; simply find and replace that IP address with your server's address. This can be done with the command `sed -i 's/10.1.0.4/10.1.0.5/' metricbeat-config.yaml filebeat-config.yaml`
+- Run the playbooks in the roles directory and navigate to each web server and the logging server and run [sudo docker ps] to check that the installation worked as expected. You should see one container running on each machine. On the logging machine, you can run the command `curl http://localhost:5601/app/kibana` to check that the Kibana app is returning data.
