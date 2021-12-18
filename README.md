@@ -1,5 +1,5 @@
 # Azure-ELK-Stack
-An Azure deployment of web servers and a logging server using Docker and Ansible
+An Azure deployment of web servers and a logging server using Docker and Ansible.
 
 ## Automated ELK Stack Deployment
 
@@ -64,7 +64,8 @@ The playbook implements the following tasks:
 
 The following screenshot displays the result of running `docker ps` on the ELK server after successfully configuring the ELK instance.
 
-![TODO: Update the path with the name of your screenshot of docker ps output](Images/docker_ps_output.png)
+![ELK-Container](https://user-images.githubusercontent.com/89709545/146630955-1da49fc9-44f2-4d87-a939-7cd0c99ddaa0.JPG)
+
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
