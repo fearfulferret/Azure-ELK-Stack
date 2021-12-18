@@ -5,7 +5,7 @@ An Azure deployment of web servers and a logging server using Docker and Ansible
 
 The files in this repository were used to configure the network depicted below.
 
-(Elk Project Diagram.jpg)
+![](Elk Project Diagram.jpg)
 
 These files were used to deploy a live ELK deployment on Azure containing two web servers, a jumpbox provisioner, and a logging server. These files can be used to replicate the deployment depicted above, and can be easily modified to deploy additional logging services or additional web server content.
 
